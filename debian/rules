@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+package = libnginx-mod-http-dav-ext
+
+%:
+	dh $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean
+	rm -f $(CURDIR)/objs
+
+override_dh_auto_configure:
+	./configure --add-dynamic-module=../nginx-dav-ext-module-${DAV_VERSION} --with-compat ${PS_NGX_EXTRA_FLAGS}
+
+override_dh_auto_build:
+	make modules
+
+override_dh_auto_install:
+	mkdir -p etc/nginx/modules
+	cp objs/ngx_http_dav_ext_module.so etc/nginx/modules

@@ -1,0 +1,76 @@
+# Dockerfile for building libnginx-mod-http-dav-ext for Debian / Ubuntu
+#
+# Usage :
+#
+#   docker build -t build-nginx-webdav -f Dockerfile-deb \
+#       --build-arg DISTRIB=debian --build-arg RELEASE=stretch \
+#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#
+# Or Ubuntu :
+#
+#   docker build -t build-nginx-webdav -f Dockerfile-deb \
+#       --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
+#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#
+# Then :
+#
+#   docker run build-nginx-webdav
+#   docker cp $(docker ps -l -q):/src ~/Downloads/
+# And once you don't need it anymore :
+#   docker rm $(docker ps -l -q)
+#
+# Latest nginx-dav-ext-module version : https://github.com/arut/nginx-dav-ext-module/releases
+# Or :
+# curl -s https://api.github.com/repos/arut/nginx-dav-ext-module/tags |grep "name" |head -1 |sed -n "s/^.*v\(.*\)\".*$/\1/p"
+#
+# Latest nginx version : https://nginx.org/en/download.html
+# Or :
+# curl -s https://nginx.org/packages/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
+
+ARG DISTRIB=debian
+ARG RELEASE=stretch
+
+FROM ${DISTRIB}:${RELEASE}
+MAINTAINER Cyril Aknine "caknine@clever-age.com"
+
+ARG DISTRIB
+ARG RELEASE
+#ARG CHANGELOG_MSG
+
+RUN apt-get update && apt-get --no-install-recommends --no-install-suggests -y install \
+    wget ca-certificates curl openssl gnupg2 apt-transport-https \
+    unzip make libpcre3-dev zlib1g-dev build-essential devscripts \
+    debhelper quilt lsb-release libssl-dev lintian uuid-dev \
+    libxml2-dev libxslt1-dev
+
+ARG NGINX_VERSION=1.16.1
+ARG DAV_VERSION=3.0.0
+
+WORKDIR /root
+
+RUN wget -qO - https://github.com/arut/nginx-dav-ext-module/archive/v${DAV_VERSION}.tar.gz | tar zxvf -
+RUN wget -qO - https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar zxvf -
+
+COPY debian nginx-${NGINX_VERSION}/debian
+
+RUN sed -i "s/stretch; urgency/${RELEASE}; urgency/g" nginx-${NGINX_VERSION}/debian/changelog
+RUN sed -i "s/~stretch)/~${RELEASE})/g" nginx-${NGINX_VERSION}/debian/changelog
+RUN sed -i "s/{NGINX_VERSION}/${NGINX_VERSION}-1~${RELEASE}/g" nginx-${NGINX_VERSION}/debian/control
+
+RUN cd nginx-${NGINX_VERSION} && dpkg-buildpackage
+
+RUN mkdir /src && mv libnginx-mod-http-dav-ext* /src/ && cp nginx-${NGINX_VERSION}/debian/changelog /src/
+RUN dpkg -c /src/libnginx-mod-http-dav-ext_*.deb
+
+RUN curl -L https://nginx.org/keys/nginx_signing.key | apt-key add -
+RUN echo "deb https://nginx.org/packages/${DISTRIB}/ ${RELEASE} nginx" >> /etc/apt/sources.list.d/nginx.list
+
+RUN apt-get update && apt-get -V --no-install-recommends --no-install-suggests -y install nginx=${NGINX_VERSION}-1~${RELEASE}
+
+RUN dpkg -i /src/libnginx-mod-http-dav-ext_*.deb && \
+    sed -i '1iload_module modules/ngx_http_dav_ext_module.so;' /etc/nginx/nginx.conf && \
+    nginx -t && /etc/init.d/nginx start && echo "Testing NGiNX headers for dav-ext presence : " && \
+    curl -s -i -X PROPFIND -H 'Depth: 1' http://localhost/ |grep '<D:multistatus xmlns:D="DAV:">'
+
+RUN dpkg -r libnginx-mod-http-dav-ext
+RUN dpkg -P libnginx-mod-http-dav-ext

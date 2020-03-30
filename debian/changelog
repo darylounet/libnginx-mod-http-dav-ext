@@ -1,0 +1,5 @@
+libnginx-mod-http-dav-ext (3.0.0+nginx-1.16.1-1~stretch) stretch; urgency=medium
+
+  * NGiNX Webdav-ext module for stock NGiNX.
+
+ -- Cyril Aknine <caknine@clever-age.com>  Sun, 29 Mar 2020 16:05:34 +0200

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cat <<BANNER
+-----------------------------------------------------------------------
+
+The dav-ext dynamic module for nginx have been installed.
+The module configuration is placed under /etc/nginx/conf.d/dav-ext.conf
+
+You have to enable this module by adding the following line to nginx
+configuration then reload nginx:
+
+    load_module modules/ngx_http_dav_ext_module.so;
+
+Please refer to the Brotli module documentation for further details:
+https://github.com/arut/nginx-dav-ext-module
+
+-----------------------------------------------------------------------
+BANNER
+
+#DEBHELPER#
+
+exit 0
