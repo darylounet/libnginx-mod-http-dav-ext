@@ -1,15 +1,15 @@
 
 Dockerfiles for building libnginx-mod-http-dav-ext for Debian / Ubuntu
 
-[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable) [![Build Status](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext.svg?branch=stable)](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext)
+[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline) [![Build Status](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext.svg?branch=mainline)](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext)
 
 If you're just interested in installing built packages, go there :
-https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable
-
-Instructions : https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable/install#manual-deb
-
-If you're interested in installing [mainline](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline) NGiNX packages, go there :
 https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline
+
+Instructions : https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline/install#manual-deb
+
+If you're interested in installing [stable](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable) NGiNX packages, go there :
+https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable
 
 If you want to build packages by yourself, this is for you :
 
@@ -18,7 +18,7 @@ DCH Dockerfile usage (always use stretch as it is replaced before build) :
 ```bash
 docker build -t deb-dch -f Dockerfile-deb-dch .
 docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c 'cd /local && \
-dch -M -v 3.0.0+nginx-1.16.1-1~stretch --distribution "stretch" "Updated upstream."'
+dch -M -v 3.0.0+nginx-1.17.9-1~stretch --distribution "stretch" "Updated upstream."'
 ```
 
 Build Dockerfile usage :
@@ -26,14 +26,14 @@ Build Dockerfile usage :
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
 --build-arg DISTRIB=debian --build-arg RELEASE=stretch \
---build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+--build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Or for Ubuntu :
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
 --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
---build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+--build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Then :
@@ -56,5 +56,5 @@ curl -s https://api.github.com/repos/arut/nginx-dav-ext-module/tags |grep "name"
 Get latest nginx version : https://nginx.org/en/download.html
 Or :
 ```bash
-curl -s https://nginx.org/packages/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
+curl -s https://nginx.org/packages/mainline/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
 ```

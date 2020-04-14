@@ -43,12 +43,12 @@ env:
 deploy:
   - provider: packagecloud
     username: ${PACKAGECLOUD_USER}
-    repository: "libnginx-mod-http-dav-ext-stable"
+    repository: "libnginx-mod-http-dav-ext-mainline"
     token: ${PACKAGECLOUD_TOKEN}
     dist: ${OS}/${DIST}
     skip_cleanup: true
     on:
-      branch: stable
+      branch: mainline
       tags: true
       condition: -n "${OS}" && -n "${DIST}" && -n "${PACKAGECLOUD_TOKEN}"
   - provider: releases
@@ -58,6 +58,6 @@ deploy:
     file: ./*.deb
     skip_cleanup: true
     on:
-      branch: stable
+      branch: mainline
       tags: true
     tag_name: $TRAVIS_TAG

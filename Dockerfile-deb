@@ -4,13 +4,13 @@
 #
 #   docker build -t build-nginx-webdav -f Dockerfile-deb \
 #       --build-arg DISTRIB=debian --build-arg RELEASE=stretch \
-#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#       --build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
 #
 # Or Ubuntu :
 #
 #   docker build -t build-nginx-webdav -f Dockerfile-deb \
 #       --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
-#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#       --build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
 #
 # Then :
 #
@@ -25,7 +25,7 @@
 #
 # Latest nginx version : https://nginx.org/en/download.html
 # Or :
-# curl -s https://nginx.org/packages/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
+# curl -s https://nginx.org/packages/mainline/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
 
 ARG DISTRIB=debian
 ARG RELEASE=stretch
@@ -43,7 +43,7 @@ RUN apt-get update && apt-get --no-install-recommends --no-install-suggests -y i
     debhelper quilt lsb-release libssl-dev lintian uuid-dev \
     libxml2-dev libxslt1-dev
 
-ARG NGINX_VERSION=1.16.1
+ARG NGINX_VERSION=1.17.9
 ARG DAV_VERSION=3.0.0
 
 WORKDIR /root
@@ -63,7 +63,7 @@ RUN mkdir /src && mv libnginx-mod-http-dav-ext* /src/ && cp nginx-${NGINX_VERSIO
 RUN dpkg -c /src/libnginx-mod-http-dav-ext_*.deb
 
 RUN curl -L https://nginx.org/keys/nginx_signing.key | apt-key add -
-RUN echo "deb https://nginx.org/packages/${DISTRIB}/ ${RELEASE} nginx" >> /etc/apt/sources.list.d/nginx.list
+RUN echo "deb https://nginx.org/packages/mainline/${DISTRIB}/ ${RELEASE} nginx" >> /etc/apt/sources.list.d/nginx.list
 
 RUN apt-get update && apt-get -V --no-install-recommends --no-install-suggests -y install nginx=${NGINX_VERSION}-1~${RELEASE}
 
