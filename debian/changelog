@@ -1,3 +1,9 @@
+libnginx-mod-http-dav-ext (3.0.0+nginx-1.18.0-1~stretch) stretch; urgency=medium
+
+  * Updated upstream.
+
+ -- Cyril Aknine <caknine@clever-age.com>  Wed, 22 Apr 2020 18:13:44 +0200
+
 libnginx-mod-http-dav-ext (3.0.0+nginx-1.16.1-1~stretch) stretch; urgency=medium
 
   * NGiNX Webdav-ext module for stock NGiNX.

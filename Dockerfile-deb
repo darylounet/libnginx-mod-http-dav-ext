@@ -4,13 +4,13 @@
 #
 #   docker build -t build-nginx-webdav -f Dockerfile-deb \
 #       --build-arg DISTRIB=debian --build-arg RELEASE=stretch \
-#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#       --build-arg NGINX_VERSION=1.18.0 --build-arg DAV_VERSION=3.0.0 .
 #
 # Or Ubuntu :
 #
 #   docker build -t build-nginx-webdav -f Dockerfile-deb \
 #       --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
-#       --build-arg NGINX_VERSION=1.16.1 --build-arg DAV_VERSION=3.0.0 .
+#       --build-arg NGINX_VERSION=1.18.0 --build-arg DAV_VERSION=3.0.0 .
 #
 # Then :
 #
@@ -43,7 +43,7 @@ RUN apt-get update && apt-get --no-install-recommends --no-install-suggests -y i
     debhelper quilt lsb-release libssl-dev lintian uuid-dev \
     libxml2-dev libxslt1-dev
 
-ARG NGINX_VERSION=1.16.1
+ARG NGINX_VERSION=1.18.0
 ARG DAV_VERSION=3.0.0
 
 WORKDIR /root
