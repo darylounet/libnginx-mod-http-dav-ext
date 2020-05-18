@@ -29,10 +29,9 @@ script:
 
 env:
     matrix:
-#      - OS=ubuntu DIST=trusty
       - OS=ubuntu DIST=xenial
       - OS=ubuntu DIST=bionic
-#      - OS=ubuntu DIST=yakkety
+      - OS=ubuntu DIST=focal
 #      - OS=debian DIST=jessie
 #      - OS=debian DIST=wheezy
       - OS=debian DIST=stretch
