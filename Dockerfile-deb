@@ -36,6 +36,8 @@ MAINTAINER Cyril Aknine "caknine@clever-age.com"
 ARG DISTRIB
 ARG RELEASE
 #ARG CHANGELOG_MSG
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV TZ=Europe/Paris
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && DEBIAN_FRONTEND=noninteractive TZ=Europe/Paris \
     apt-get update && apt-get --no-install-recommends --no-install-suggests -y install \
