@@ -1,3 +1,9 @@
+libnginx-mod-http-dav-ext (3.0.0+nginx-1.18.0-2~stretch) stretch; urgency=medium
+
+  * Updated upstream.
+
+ -- Cyril Aknine <caknine@clever-age.com>  Sat, 31 Oct 2020 17:04:54 +0100
+
 libnginx-mod-http-dav-ext (3.0.0+nginx-1.18.0-1~stretch) stretch; urgency=medium
 
   * Updated upstream.

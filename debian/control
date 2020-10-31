@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 9~),
                libpcre3-dev,
                zlib1g-dev
 Standards-Version: 3.9.8.0
-Homepage: https://github.com/google/brotli
+Homepage: https://github.com/arut/nginx-dav-ext-module/
 
 Package: libnginx-mod-http-dav-ext
 Architecture: amd64 i386
