@@ -18,7 +18,7 @@ DCH Dockerfile usage (always use stretch as it is replaced before build) :
 ```bash
 docker build -t deb-dch -f Dockerfile-deb-dch .
 docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c 'cd /local && \
-dch -M -v 3.0.0+nginx-1.17.9-1~stretch --distribution "stretch" "Updated upstream."'
+dch -M -v 3.0.0+nginx-1.19.4-1~stretch --distribution "stretch" "Updated upstream."'
 ```
 
 Build Dockerfile usage :
@@ -26,14 +26,14 @@ Build Dockerfile usage :
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
 --build-arg DISTRIB=debian --build-arg RELEASE=stretch \
---build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
+--build-arg NGINX_VERSION=1.19.4 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Or for Ubuntu :
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
 --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
---build-arg NGINX_VERSION=1.17.9 --build-arg DAV_VERSION=3.0.0 .
+--build-arg NGINX_VERSION=1.19.4 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Then :
@@ -56,5 +56,5 @@ curl -s https://api.github.com/repos/arut/nginx-dav-ext-module/tags |grep "name"
 Get latest nginx version : https://nginx.org/en/download.html
 Or :
 ```bash
-curl -s https://nginx.org/packages/mainline/ubuntu/dists/bionic/nginx/binary-amd64/Packages.gz |zcat |php -r 'preg_match_all("#Package: nginx\nVersion: (.*?)-\d~.*?\nArch#", file_get_contents("php://stdin"), $m);echo implode($m[1], "\n")."\n";' |sort -r |head -1
+curl -s https://nginx.org/packages/mainline/debian/pool/nginx/n/nginx/ |grep '"nginx_' | sed -n "s/^.*\">nginx_\(.*\)\~.*$/\1/p" |sort -Vr |head -1| cut -d'-' -f1
 ```
