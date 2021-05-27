@@ -1,7 +1,7 @@
 
 Dockerfiles for building libnginx-mod-http-dav-ext for Debian / Ubuntu
 
-[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable) [![Build Status](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext.svg?branch=stable)](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext)
+[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable) [![Build and Deploy](https://github.com/darylounet/libnginx-mod-http-dav-ext/actions/workflows/github-actions.yml/badge.svg)](https://github.com/darylounet/libnginx-mod-http-dav-ext/actions/workflows/github-actions.yml)
 
 If you're just interested in installing built packages, go there :
 https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable
