@@ -1,10 +1,12 @@
 
 Dockerfiles for building libnginx-mod-http-dav-ext for Debian / Ubuntu
 
-[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline) [![Build Status](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext.svg?branch=mainline)](https://travis-ci.org/darylounet/libnginx-mod-http-dav-ext)
+[![packagecloud deb packages](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline) [![Build and Deploy](https://github.com/darylounet/libnginx-mod-http-dav-ext/actions/workflows/github-actions.yml/badge.svg)](https://github.com/darylounet/libnginx-mod-http-dav-ext/actions/workflows/github-actions.yml)
 
 If you're just interested in installing built packages, go there :
-https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline
+https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable
+
+/!\ Warning : these packages only works with official NGiNX Ubuntu / Debian repository : https://nginx.org/en/linux_packages.html#distributions
 
 Instructions : https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline/install#manual-deb
 
@@ -13,27 +15,27 @@ https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-stable
 
 If you want to build packages by yourself, this is for you :
 
-DCH Dockerfile usage (always use stretch as it is replaced before build) :
+DCH Dockerfile usage (always use bullseye as it is replaced before build) :
 
 ```bash
 docker build -t deb-dch -f Dockerfile-deb-dch .
 docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c 'cd /local && \
-dch -M -v 3.0.0+nginx-1.19.4-1~stretch --distribution "stretch" "Updated upstream."'
+dch -M -v 3.0.0+nginx-1.21.2-1~bullseye --distribution "bullseye" "Updated upstream."'
 ```
 
 Build Dockerfile usage :
 
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
---build-arg DISTRIB=debian --build-arg RELEASE=stretch \
---build-arg NGINX_VERSION=1.19.4 --build-arg DAV_VERSION=3.0.0 .
+--build-arg DISTRIB=debian --build-arg RELEASE=bullseye \
+--build-arg NGINX_VERSION=1.21.0 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Or for Ubuntu :
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
 --build-arg DISTRIB=ubuntu --build-arg RELEASE=bionic \
---build-arg NGINX_VERSION=1.19.4 --build-arg DAV_VERSION=3.0.0 .
+--build-arg NGINX_VERSION=1.21.0 --build-arg DAV_VERSION=3.0.0 .
 ```
 
 Then :
