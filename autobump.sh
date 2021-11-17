@@ -5,7 +5,7 @@ DAV_VERSION=`curl -s https://api.github.com/repos/arut/nginx-dav-ext-module/tags
 
 docker build --pull -t deb-dch -f Dockerfile-deb-dch .
 docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c "cd /local && \
-    dch -M -v ${DAV_VERSION}+nginx-${NGINX_DEB_VERSION}~stretch --distribution 'stretch' 'Updated upstream.'"
+    dch -M -v ${DAV_VERSION}+nginx-${NGINX_DEB_VERSION}~bullseye --distribution 'bullseye' 'Updated upstream.'"
 
 git add debian/changelog
 git commit -m "Updated upstream."

@@ -15,19 +15,19 @@ https://packagecloud.io/DaryL/libnginx-mod-http-dav-ext-mainline
 
 If you want to build packages by yourself, this is for you :
 
-DCH Dockerfile usage (always use stretch as it is replaced before build) :
+DCH Dockerfile usage (always use bullseye as it is replaced before build) :
 
 ```bash
 docker build -t deb-dch -f Dockerfile-deb-dch .
 docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c 'cd /local && \
-dch -M -v 3.0.0+nginx-1.18.0-1~stretch --distribution "stretch" "Updated upstream."'
+dch -M -v 3.0.0+nginx-1.20.2-1~bullseye --distribution "bullseye" "Updated upstream."'
 ```
 
 Build Dockerfile usage :
 
 ```bash
 docker build -t build-nginx-webdav -f Dockerfile-deb \
---build-arg DISTRIB=debian --build-arg RELEASE=stretch \
+--build-arg DISTRIB=debian --build-arg RELEASE=bullseye \
 --build-arg NGINX_VERSION=1.18.0 --build-arg DAV_VERSION=3.0.0 .
 ```
 
