@@ -13,7 +13,7 @@ Standards-Version: 3.9.8.0
 Homepage: https://github.com/arut/nginx-dav-ext-module/
 
 Package: libnginx-mod-http-dav-ext
-Architecture: amd64 i386
+Architecture: amd64 arm64
 Depends: ${misc:Depends}, ${shlibs:Depends}, nginx (= {NGINX_VERSION})
 Description: The standard ngx_http_dav_module provides partial WebDAV implementation
  and only supports GET,HEAD,PUT,DELETE,MKCOL,COPY,MOVE methods.
