@@ -1,3 +1,9 @@
+libnginx-mod-http-dav-ext (3.0.0+nginx-1.29.1-1~bullseye) bullseye; urgency=medium
+
+  * Updated upstream.
+
+ -- Cyril Aknine <caknine@clever-age.com>  Thu, 14 Aug 2025 16:15:22 +0200
+
 libnginx-mod-http-dav-ext (3.0.0+nginx-1.29.0-1~bullseye) bullseye; urgency=medium
 
   * Updated upstream.
