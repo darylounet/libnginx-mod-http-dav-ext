@@ -42,8 +42,8 @@ ENV TZ=Europe/Paris
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && DEBIAN_FRONTEND=noninteractive TZ=Europe/Paris \
     apt-get update && apt-get --no-install-recommends --no-install-suggests -y install \
     wget ca-certificates curl openssl gnupg2 apt-transport-https \
-    unzip make libpcre3-dev zlib1g-dev build-essential devscripts \
-    debhelper quilt lsb-release libssl-dev lintian uuid-dev \
+    unzip make libpcre2-dev zlib1g-dev build-essential devscripts \
+    debhelper quilt lsb-release debian-archive-keyring libssl-dev lintian uuid-dev \
     libxml2-dev libxslt1-dev
 
 ARG NGINX_VERSION=1.18.0
@@ -66,8 +66,13 @@ RUN cd nginx-${NGINX_VERSION} && dpkg-buildpackage
 RUN mkdir /src && mv libnginx-mod-http-dav-ext* /src/ && cp nginx-${NGINX_VERSION}/debian/changelog /src/
 RUN dpkg -c /src/libnginx-mod-http-dav-ext_*.deb
 
-RUN curl -L https://nginx.org/keys/nginx_signing.key | apt-key add -
-RUN echo "deb https://nginx.org/packages/${DISTRIB}/ ${RELEASE} nginx" >> /etc/apt/sources.list.d/nginx.list
+RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+        | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+RUN mkdir /root/.gnupg && chmod -R 700 /root/.gnupg/ && \
+    gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+    http://nginx.org/packages/${DISTRIB} ${RELEASE} nginx" \
+        | tee /etc/apt/sources.list.d/nginx.list
 
 RUN apt-get update && apt-get -V --no-install-recommends --no-install-suggests -y install nginx=${NGINX_VERSION}-${NGINX_DEB_RELEASE}~${RELEASE}
 
