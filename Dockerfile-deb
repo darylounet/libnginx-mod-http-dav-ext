@@ -52,8 +52,11 @@ ARG DAV_VERSION=3.0.0
 
 WORKDIR /root
 
-RUN wget -qO - https://github.com/arut/nginx-dav-ext-module/archive/v${DAV_VERSION}.tar.gz | tar zxvf -
-RUN wget -qO - https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar zxvf -
+RUN test -n "${DAV_VERSION}" && test -n "${NGINX_VERSION}" \
+    && wget -q -O dav-ext.tar.gz https://github.com/arut/nginx-dav-ext-module/archive/v${DAV_VERSION}.tar.gz \
+    && tar zxvf dav-ext.tar.gz && rm dav-ext.tar.gz
+RUN wget -q -O nginx.tar.gz https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
+    && tar zxvf nginx.tar.gz && rm nginx.tar.gz
 
 COPY debian nginx-${NGINX_VERSION}/debian
 
