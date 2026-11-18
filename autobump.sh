@@ -1,7 +1,17 @@
 #!/bin/bash
 
 NGINX_DEB_VERSION=`curl -s https://nginx.org/packages/debian/pool/nginx/n/nginx/ |grep '"nginx_' | sed -n "s/^.*\">nginx_\(.*\)\~.*$/\1/p" |sort -Vr |head -1`
-DAV_VERSION=`curl -s https://api.github.com/repos/arut/nginx-dav-ext-module/tags |grep "name" |head -1 |sed -n "s/^.*v\(.*\)\".*$/\1/p"`
+# Latest stable tag, read with git rather than the GitHub API: the API is
+# rate-limited (60 req/h per IP when unauthenticated), which silently returned
+# an empty version on shared CI runners.
+DAV_VERSION=`git ls-remote --tags --refs https://github.com/arut/nginx-dav-ext-module 'v*' |sed -n 's|^.*refs/tags/v\([0-9][0-9.]*\)$|\1|p' |sort -V |tail -1`
+
+for var in NGINX_DEB_VERSION DAV_VERSION; do
+    if [ -z "${!var}" ]; then
+        echo "Error: could not determine ${var} (network failure or upstream format change)." >&2
+        exit 1
+    fi
+done
 
 # Check that the distributions built by the workflow are the ones nginx.org
 # publishes for this nginx version, before anything is committed or tagged.
@@ -57,5 +67,5 @@ docker run -it -v $PWD:/local -e HOME=/local deb-dch bash -c "cd /local && \
 git add debian/changelog
 git commit -m "Updated upstream."
 git tag "webdav-ext-${DAV_VERSION}/nginx-${NGINX_DEB_VERSION}"
-#git push origin --tags
+git push origin --tags
 #git push origin "webdav-ext-${DAV_VERSION}/nginx-${NGINX_DEB_VERSION}"
